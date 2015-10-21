@@ -13,11 +13,11 @@ function addCountries(data){
 	console.log(data);
 	
 	for(var i=0; i<data.length; i++){
-		//countryData.data
+		countryData[data.Name].code = data.Code;
 	}
 	//load next set of data
 	//loadCorruptionPerceptionIndex();
-	
+	console.log(countryData);
 }
 
 function loadCorruptionPerceptionIndex(){
