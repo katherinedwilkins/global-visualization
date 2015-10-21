@@ -13,7 +13,7 @@ function addCountries(data){
 	console.log(data);
 	
 	for(var i=0; i<data.length; i++){
-		countryData[data.Name].code = data.Code;
+		countryData[data.Name]
 	}
 	//load next set of data
 	//loadCorruptionPerceptionIndex();
