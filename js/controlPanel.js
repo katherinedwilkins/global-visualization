@@ -6,7 +6,7 @@ var client = new WindowsAzure.MobileServiceClient(
 
 function uploadFile(){
 	d3.csv("./dataSets/corruption perception index.csv", function(csv){
-		console.log(csv);
+		console.array(csv);
 	});
 
 }
