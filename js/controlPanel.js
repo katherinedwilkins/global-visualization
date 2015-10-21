@@ -8,12 +8,13 @@ var countryData = {};
 
 
 
-//fill in country name and code informaiton on the countryData Object
+//fill in country name and code informaiton on the countryData object
+//each country will be a seperate object within the countryData object
 function addCountries(data){
 	console.log(data);
 	
 	for(var i=0; i<data.length; i++){
-		countryData[data.Name]
+		countryData[data[0].Name].code = data[0].Code;
 	}
 	//load next set of data
 	//loadCorruptionPerceptionIndex();
