@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Page Title</title>
+        <title>Visualization Tool</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
         <script src="./js/datamaps.world.min.js"></script>
@@ -14,6 +14,9 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <link rel="stylesheet" type="text/css" href="styles.css" />
+        
+        <!-- Azure Mobile Web Services reference -->
+        <script src="http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.2.7.min.js"></script>
     </head>
     <body>
         
@@ -42,15 +45,15 @@
           <div id="controlPanelContainer">
               <div id="controlPanel">
                     <div id="dvImportSegments" class="fileupload ">
-                        <legend>Upload CSV File</legend>
+                        <!--<legend>Upload CSV File</legend>
                         <span class ="btn btn-primary btn-file">Choose File(s)<input type="file" id="fileSelect" name="files[]" multiple></span>
                         <!--<input type="file" id="fileSelect" name="files[]" multiple />-->
 
-                        <button class="btn btn-success"" id="uploadFile">Upload File(s)</button>
+                        <!--<button class="btn btn-success"" id="uploadFile">Upload File(s)</button>
                         <button class="btn btn-danger"" id="removeFiles">Remove Files(s)</button>
-                        <!--<output id="list"></output>-->
-                        <ul id="fileList"></ul>
-                        
+
+                        <ul id="fileList"></ul>-->
+                        <button class="btn btn-primary"" id="uploadFile">Upload File</button>
                     </div>
               </div>
           </div>
