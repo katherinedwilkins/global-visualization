@@ -4,7 +4,7 @@ var client = new WindowsAzure.MobileServiceClient(
     "nEqHeNeqxcozORPJNVnEGUUWMRrHgW13"
 );
 
-var countryData = {};
+var countryData = [];
 
 
 
@@ -14,7 +14,8 @@ function addCountries(data){
 	console.log(data);
 	
 	for(var i=0; i<data.length; i++){
-		countryData[data[0].Name].code = data[0].Code;
+		countryData.push([data[0].Name]);
+		//.code = data[0].Code;
 	}
 	//load next set of data
 	//loadCorruptionPerceptionIndex();
