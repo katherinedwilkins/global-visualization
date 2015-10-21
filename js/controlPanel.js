@@ -24,7 +24,7 @@ function loadCorruptionPerceptionIndex(){
 }
 
 function uploadFile(){
-	d3.csv("./dataSets/country and two digit codes.csv", addCountries);
+	d3.csv("./dataSets/countries and two digit codes.csv", addCountries);
 }
 
 document.getElementById('uploadFile').addEventListener('click', uploadFile, false);
