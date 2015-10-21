@@ -10,8 +10,11 @@ var countryData = {};
 
 //fill in country name and code informaiton on the countryData Object
 function addCountries(data){
-	console.table(data);
+	console.log(data);
 	
+	for(var i=0; i<data.length; i++){
+		//countryData.data
+	}
 	//load next set of data
 	//loadCorruptionPerceptionIndex();
 	
