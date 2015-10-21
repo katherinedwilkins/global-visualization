@@ -4,8 +4,7 @@ var map;
 
 function changeVisibleForm(form) {
     //make all forms invisible
-    $("#mapContainer").hide();
-    $("#controlPanelContainer").hide();
+    $(".tabContainer").hide();
     
     //make the desired form visible
     switch (form) {
@@ -96,7 +95,7 @@ $(document).ready(function () {
     $('.btn-group').button();
     
     //change to map view
-    changeVisibleForm("map");
+    changeVisibleForm("controlPanel");
     
     $("#formSelection input:radio").change(function () {
         console.log($("#formSelection input:radio:checked").val());
