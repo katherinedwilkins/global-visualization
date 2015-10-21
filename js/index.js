@@ -65,7 +65,7 @@ $(function () {
         },
 
     });
-    console.log(map);
+    //console.log(map);
 });
 
 function mapZoom(evt){
