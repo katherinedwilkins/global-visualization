@@ -4,6 +4,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
         <script src="./js/datamaps.world.min.js"></script>
+        <script src="./js/topojson.v0.min.js"></script>
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <!-- Latest compiled and minified CSS -->
@@ -16,15 +17,45 @@
     </head>
     <body>
         
-      <div id="container">
+      <div class="container-fluid" id="container">
+          <div class="row">
+			<div class="col-sm-12 col-md-8">
+				<h1>Global Index Visualization Tool</h1>
+			</div>
+		</div>
+          <div id="formSelection">
+			<div class="btn-group" data-toggle="buttons">
+				<label class="btn btn-default active">
+					<input type="radio" id="q157" name="formType" value="map" /> View Map
+				</label>
+				<label class="btn btn-default">
+					<input type="radio" id="q156" name="formType" value="controlPanel" /> Control Panel
+				</label>
+			</div>
+            
+		</div>
           <div id="mapContainer">
-            <div id="map" style="position: relative; width: 500px; height: 300px;"></div>
+            <div id="map" style="position: relative; width: 900px; height: 600px;"></div>
+            <div><button class="btn btn-success"" id="zoomIn">+</button>
+                        <button class="btn btn-danger"" id="zoomOut">-</button></div>
           </div>
           <div id="controlPanelContainer">
-              <div id="controlPanel"></div>
+              <div id="controlPanel">
+                    <div id="dvImportSegments" class="fileupload ">
+                        <legend>Upload CSV File</legend>
+                        <span class ="btn btn-primary btn-file">Choose File(s)<input type="file" id="fileSelect" name="files[]" multiple></span>
+                        <!--<input type="file" id="fileSelect" name="files[]" multiple />-->
+
+                        <button class="btn btn-success"" id="uploadFile">Upload File(s)</button>
+                        <button class="btn btn-danger"" id="removeFiles">Remove Files(s)</button>
+                        <!--<output id="list"></output>-->
+                        <ul id="fileList"></ul>
+                        
+                    </div>
+              </div>
           </div>
       </div>
-          
-
     </body>
+    <script src="./js/index.js"></script>
+    <script src="./js/controlPanel.js"></script>
 </html>
