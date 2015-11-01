@@ -1,0 +1,61 @@
+#container{
+	margin: 2em;
+}
+#formSelection{
+	margin: 1em;
+}
+#mapContainer{
+	
+}
+.controlBox{
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+#yearSelect .slider-selection {
+	background: #BABABA;
+}
+
+body{
+	background: white;
+	margin-left: 2em;
+	margin-right: 2em;
+}
+
+h1{
+	color: black;	
+}
+.controlContainer{
+	margin-top: .5em;
+}
+.well{
+	background: lightslategray
+}
+#map{
+	margin-bottom: 1em;
+}
+
+svg {
+  background: #eee;
+}
+
+.sphere {
+  fill: #fff;
+}
+
+.land {
+  fill: #000;
+}
+
+.land {
+  fill: green;
+  stroke: #fff;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}

@@ -2,34 +2,39 @@
     <head>
         <title>Visualization Tool</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
         <script src="./js/datamaps.world.min.js"></script>
-        <script src="./js/topojson.v0.min.js"></script>
+        <!--<script src="./js/topojson.v0.min.js"></script>-->
         <script src="./js/async.min.js"></script>
+
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <!-- Optional theme -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="styles.css" />
-        
+
+        <script src="./js/bootstrap-slider.js"></script>
         <!-- Azure Mobile Web Services reference -->
         <script src="http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.2.7.min.js"></script>
         
         <script src = "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+        
+        <link rel="stylesheet" type="text/css" href="./css/styles.css" />
+        <link rel="stylesheet" type="text/css" href="./css/bootstrap-slider.css" />
     </head>
     <body>
         
       <div class="container-fluid" id="container">
           <div class="row">
-			<div class="col-sm-12 col-md-8">
+			<div class="col-sm-12 col-md-12">
 				<h1>Global Index Visualization Tool</h1>
 			</div>
-		</div>
-          <div id="formSelection">
+		  </div>
+          <!--<div id="formSelection">
 			<div class="btn-group" data-toggle="buttons">
 				<label class="btn btn-default active">
 					<input type="radio" id="q157" name="formType" value="map" /> View Map
@@ -37,37 +42,32 @@
 				<label class="btn btn-default">
 					<input type="radio" id="q156" name="formType" value="controlPanel" /> Control Panel
 				</label>
-			</div>
-            
-		</div>
-          <div id="mapContainer" class="tabContainer">
-            <div id="map" style="position: relative; width: 900px; height: 600px;"></div>
-            <div><button class="btn btn-success"" id="zoomIn">+</button>
-                        <button class="btn btn-danger"" id="zoomOut">-</button></div>
+			</div> -->
+		  </div>
+          <div class="col-sm-12 col-md-12" id="mapContainer" class="tabContainer">
+            <!--<svg id="map"  width="960" height="500"></div>-->
           </div>
-          <div id="controlPanelContainer" class="tabContainer">
-              <div id="controlPanel">
-                    <div id="dvImportSegments" class="fileupload ">
-                        <!--<legend>Upload CSV File</legend>
-                        <span class ="btn btn-primary btn-file">Choose File(s)<input type="file" id="fileSelect" name="files[]" multiple></span>
-                        <!--<input type="file" id="fileSelect" name="files[]" multiple />-->
-
-                        <!--<button class="btn btn-success"" id="uploadFile">Upload File(s)</button>
-                        <button class="btn btn-danger"" id="removeFiles">Remove Files(s)</button>
-
-                        <ul id="fileList"></ul>-->
-                        <div class = "controlBox">
-                            <button class="btn btn-primary"" id="uploadFile">Import Data Files</button>
-                        </div>
-                        <div class = "controlBox">
-                            <button class="btn btn-primary"" id="normalizeCPI">Normalize Corruption Perception Index</button>
-                            <button class="btn btn-primary"" id="normalizeGDP">Normalize GDP</button>
-                        </div>
-                    </div>
-              </div>
+          <div class="col-sm-12 col-md-12 well controlContainer" id="dataSets" >
+                <div class="radio">
+                    <label><input type="radio" name="dataSelection" value="gdpCountry">GDP Country</label>
+                </div>
+                <div class="radio">
+                    <label><input type="radio" name="dataSelection" value="gdpCapita">GDP Per Capita</label>
+                </div>
+                <div class="radio">
+                    <label><input type="radio" name="dataSelection" value="corruption">Corruption Index</label>
+                </div>
+                <div class="radio">
+                    <label><input type="radio" name="dataSelection" value="refugeesOut">Refugees Out</label>
+                </div>
+                <div class="radio">
+                    <label><input type="radio" name="dataSelection" value="refugeesIn">Refugees In</label>
+                </div>
+          </div>
+          <div class="col-sm-12 col-md-12 well" id="controlPanelContainer" class="controlContainer">
+             <input id="yearSelectSlider" data-slider-id='yearSelectSlider' class='slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/>
           </div>
       </div>
     </body>
     <script src="./js/index.js"></script>
-    <script src="./js/controlPanel.js"></script>
 </html>
