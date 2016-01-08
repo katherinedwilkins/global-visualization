@@ -1,0 +1,15 @@
+
+  d3: 'bower_components/d3/d3.js'
+
+
+  async: 'bower_components/async/lib/async.js',
+  bootstrap: [
+    'bower_components/bootstrap/less/bootstrap.less',
+    'bower_components/bootstrap/dist/js/bootstrap.js'
+  ],
+  d3: 'bower_components/d3/d3.js',
+  'jquery-ui': 'bower_components/jquery-ui/jquery-ui.js',
+  jquery: 'bower_components/jquery/dist/jquery.js',
+  topojson: 'bower_components/topojson/topojson.js',
+  underscore: 'bower_components/underscore/underscore.js'
+

@@ -1,0 +1,29 @@
+{
+  "name": "source",
+  "homepage": "https://github.com/reggie3/GlobalVisualizaton-JAWSThesis",
+  "authors": [
+    "Reginald Johnson <reginald.johnson@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "~3.5.12",
+    "jquery": "~2.1.4",
+    "topojson": "~1.6.19",
+    "async": "~1.5.2",
+    "jquery-ui": "~1.11.4",
+    "bootstrap": "~3.3.6",
+    "underscore": "~1.8.3",
+    "jstat": "~1.5.2",
+    "d3-legend": "~1.7.0"
+  }
+}
