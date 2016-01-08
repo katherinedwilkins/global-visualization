@@ -1,0 +1,292 @@
+#container{
+	margin: auto;
+	z-index: 0;
+	width: 80%;
+}
+
+#shade{
+	width: 100%;
+	height: 100vh;
+	z-index: 100;
+	background: rgba(0,0,0, 0.5);
+	position: absolute;
+	margin: auto;
+}
+
+.waiting{
+	color: white;
+	text-align: center;
+	position: absolute;               /* 2 */
+   top: 25%;                         /* 3 */
+	width: 80%;
+}
+
+#formSelection{
+	margin: 1em;
+}
+
+.controlBox{
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+#yearSelect .slider-selection {
+	background: #BABABA;
+}
+
+body{
+	background: white;
+}
+
+h1{
+	color: black;	
+}
+
+.well{
+	background: lightslategray
+}
+
+
+svg.map {
+  background: lightblue;
+}
+
+.sphere {
+  fill: #fff;
+}
+
+.land {
+  fill: #000;
+}
+
+.land {
+  fill: green;
+}
+
+
+.overlay {
+  	fill: none;
+  	pointer-events: all;
+}
+
+#map{
+	margin-bottom: 1em;
+
+}
+
+#chloroplethSVG{
+	position: relative;
+	top: -50;
+	left: 0;
+}
+#mapOverlay{
+	background: lightgray;
+  	position: absolute;
+  	top: 570;
+  	left: 20;
+  	z-index: 1;
+	padding: 2px;
+}
+
+.mapKey{
+	background: lightgray;
+  	position: absolute;
+  	top: 300;
+  	left: 20;
+  	z-index: 1;
+	padding: 2px;
+}
+
+.controlOverlay{
+
+  	position: relative;
+  	top: 10;
+  	left: 10;
+  	z-index: 10;
+}
+
+.land{
+  stroke: #000;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+#Hounduras,
+#Guatemala,
+#El Salvador,
+#Syria{
+	stroke: MediumVioletRed;
+}
+
+.keyText{
+font-size: 12px;	
+}
+td{
+	padding-left: .5em;
+	padding-right: .5em;
+	padding-bottom: 2px;
+	padding-top: 2px;
+}
+.overlay{
+	border-radius: 5px;
+    background: #C0C0C0;  
+}
+.mapKey{
+  	position: absolute;
+  	top: 300;
+  	left: 20;
+  	z-index: 1;
+}
+
+.hasData{
+	fill: blue;
+}
+
+.noData{
+	fill: dimgray;
+}
+
+/*.q0-9 { fill:rgb(247,251,255); }
+.q1-9 { fill:rgb(222,235,247); }
+.q2-9 { fill:rgb(198,219,239); }
+.q3-9 { fill:rgb(158,202,225); }
+.q4-9 { fill:rgb(107,174,214); }
+.q5-9 { fill:rgb(66,146,198); }
+.q6-9 { fill:rgb(33,113,181); }
+.q7-9 { fill:rgb(8,81,156); }
+.q8-9 { fill:rgb(8,48,107); }*/
+.norm0{fill: #ffffcc;}
+.norm1{fill: #c2e699;}
+.norm2{fill: #78c679;}
+.norm3{fill: #31a354;}
+.norm4{fill: #006837;}
+
+.inv0{fill: #fef0d9;}
+.inv1{fill: #fdcc8a;}
+.inv2{fill: #fc8d59;}
+.inv3{fill: #e34a33;}
+.inv4{fill: #b30000;}
+
+
+.cpi0{fill: #a50026;}
+.cpi1{fill: #d73027;}
+.cpi2{fill: #f46d43;}
+.cpi3{fill: #fdae61;}
+.cpi4{fill: #fee08b;}
+.cpi5{fill: #d9ef8b;}
+.cpi6{fill: #a6d96a;}
+.cpi7{fill: #66bd63;}
+.cpi8{fill: #1a9850;}
+.cpi9{fill: #006837;}
+
+
+/*.trendup5,.zeroPercentile,.q0-9{	fill: #006d2c;}
+.trendup4,.tenPercentile,.q1-9 {	fill: #2ca25f;}
+.trendup3,.twentyPercentile,.q2-9{	fill: #66c2a4;}
+.trendup2,.thirtyPercentile,.q3-9{	fill: #b2e2e2;}
+.trenddown1,.fourtyPercentile,.q4-9{	fill: #ffffb2;}
+.trenddown2,.fiftyPercentile,.q5-9{	fill: #fecc5c;}
+.trenddown3,.sixtyPercentile,.q6-9{	fill: #fd8d3c;}
+.trenddown4,.seventyPercentile,.q7-9{	fill: #f03b20;}
+.trenddown5,.eightyPercentile,.q8-9{	fill: #bd0026;}*/
+
+.hide {
+    display: none;
+}
+
+.chart rect {
+  fill: powderblue;
+}
+
+.chart text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+.controlContainer{
+	margin-top: .5em;
+	width: 900px;
+	clear: both;		
+	margin-left: auto;
+	margin-right: auto;
+}
+.controlContainerHeading{
+	color: white;
+	font-size: 150%;
+	margin-bottom: .5em;	
+}
+
+#selectedYear{
+	color: white;
+	font-size: 125%;
+	margin-left: .5em;	
+}
+
+.instructions{
+	color: white;
+	font-size: 110%;
+}
+
+.sliderContainer{
+	height: 8em;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+#scatterPlot > svg{
+	background: lightblue;
+	border: 1px solid gray;
+	display: block;
+	margin: auto;
+}
+
+#map > svg{
+	background: lightblue;
+	border: 1px solid gray;
+	display: block;
+
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+.axisAttribution{
+	font-size: 10px;
+}
+
