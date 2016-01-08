@@ -1,0 +1,83 @@
+<html>
+	<head>
+		<title>Scatter Plots: Mass Migration Data Visualizations</title>
+
+
+		<script src="js/vendor.min.js"></script>
+		
+		<script src="./js/datamaps.world.min.js"></script>
+        
+  
+
+        <link rel="stylesheet" href="css/cstyles.css">
+		
+	</head>
+	<body>
+		<div id="shade">
+        <h1 id = "waitingMessage" class="waiting">Please Wait</h1>
+    </div>
+		<div class="container-fluid" id="container">
+			<div class="row">
+				<div class="col-sm-12 col-md-12">
+					<h1>Global Index Visualization Tool</h1>
+				</div>
+		  </div>
+		</div>
+		<div id="scatterPlotContainer" class="svgContainer">
+			<div id="scatterPlot"></div>
+		</div>
+
+		<div class=" center-block controlContainer" id="dataSets">
+			<div class="col-sm-6 col-md-6 well">
+				<div class = "controlContainerHeading">X Axis</div>
+				<div class="dropdown col-sm-6 col-md-6">	
+					<button id="yAxisDropDown" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select X Axis Value
+					<span class="caret"></span></button>
+					<ul id="xAxisMenu" class="dropdown-menu">
+					</ul>
+				</div>
+				<span class="instructions" id="xAxisSelected">Please select a data set</span>
+			</div>
+			<div class="col-sm-6 col-md-6 well">
+				<div class = "controlContainerHeading">Y Axis</div>
+				<div class="dropdown col-sm-6 col-md-6">
+					<button id="yAxisDropDown" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Y Axis Value
+					<span class="caret"></span></button>
+					<ul id="yAxisMenu" class="dropdown-menu">
+					</ul>
+				</div>
+				<span class="instructions" id="yAxisSelected">Please select a data set</span>
+			</div>
+		</div>	
+		
+		<!-- year selection slider-->
+		<div class="controlContainer well sliderContainer">
+
+                <div class="controlContainerHeading">Years to Display:&nbsp<span id="yearsDisplayed"></span></div>
+					<div>
+						<div class="col-sm-1 col-md-1">
+							<span class="instructions" id="minYear">min</span>
+						</div>
+						<div id="yearSelectSlider" class="col-sm-10 col-md-10 vcenter">
+							
+						</div>
+						<div class="col-sm-1 col-md-1">
+							<span class="instructions" id="maxYear">max</span>
+						</div>
+					</div>  
+				</div>
+            </div>
+          </div>
+		  <!-- correlation coefficients-->
+		  <div class="controlContainer">
+			  <div class="col-sm-6 col-md-6 well">
+				 <span class="instructions"> Pearson Correlation Coefficient:&nbsp</span><span class="instructions" id="pearsonCoefficient"></span>
+			  </div>
+			  <div class="col-sm-6 col-md-6 well">
+				  <span class="instructions"> Spearman Correlation Coefficient:&nbsp</span><span class="instructions" id="spearmanCoefficient"></span>
+			  </div>
+		  </div>
+	</body>
+	<script src="js/custom.js"></script>
+</html>
+

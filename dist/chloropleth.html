@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Chloropleth: World Index Visualizations</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
+    <script src="./js/datamaps.world.min.js"></script>
+    <script src="./js/topojson.v0.min.js"></script>
+    <script src="./js/async.js"></script>
+
+    <script src="./js/utilities.js"></script>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="./js/bootstrap-switch.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap-switch.min.css">
+
+    <!--<script src="./js/bootstrap-slider.js"></script>-->
+    <!-- Azure Mobile Web Services reference -->
+    <!--<script src="http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.2.7.min.js"></script>
+        -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="./css/styles.css" />
+    <!--<link rel="stylesheet" type="text/css" href="./css/bootstrap-slider.css" />-->
+    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+
+</head>
+
+<body>
+    <div id="shade">
+        <h1 id="waitingMessage" class="waiting">Please Wait</h1>
+    </div>
+    <div class="container-fluid" id="container">
+        
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h1>Global Index Visualization Tool</h1>
+                <h4>Use mouse wheel to zoom in and out.  Click on map and move to drag map.</h4>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-12 tabContainer" id="mapContainer">
+            <div>
+                <div id="map"></div>
+
+                <div id="mapKey" class="hide">
+                    <table id="key" class="overlay mapkey">
+                        <tr>
+                            <td id="ninetyColor">
+                                <svg class="map" width="15" height="15">
+                                    <rect id="1Block" width="15" height="15" class="ninetyPercentile" />
+                                </svg>
+                            </td>
+                            <td id="ninetyText" class="keyText">Ninety Percentile</td>
+                        </tr>
+                        <tr>
+                            <td id="eightyColor">
+                                <svg width="15" height="15">
+                                    <rect id="2Block" width="15" height="15" class="eightyPercentile" />
+                                </svg>
+                            </td>
+                            <td id="eightyText" class="keyText">Eighty Percentile</td>
+                        </tr>
+                        <tr>
+                            <td id="seventyColor">
+                                <svg width="15" height="15">
+                                    <rect id="3Block" width="15" height="15" class="seventyPercentile" />
+                                </svg>
+                            </td>
+                            <td id="seventyText" class="keyText">Seventy Percentile</td>
+                        </tr>
+                        <tr>
+                            <td id="sixtyColor">
+                                <svg width="15" height="15">
+                                    <rect id="4Block" width="15" height="15" class="sixtyPercentile" />
+                                </svg>
+                            </td>
+                            <td id="sixtyText" class="keyText">Sixty Percentile</td>
+                        </tr>
+                        <tr>
+                            <td id="fiftyColor">
+                                <svg width="15" height="15">
+                                    <rect id="5Block" width="15" height="15" class="fiftyPercentile" />
+                                </svg>
+                            </td>
+                            <td id="fiftyText" class="keyText">Fifty Percentile</td>
+                        </tr>
+                        <tr>
+                            <td id="fourtyColor">
+                                <svg width="15" height="15">
+                                    <rect id="6Block" width="15" height="15" class="fourtyPercentile" />
+                                </svg>
+                            </td>
+                            <td id="fourtyText" class="keyText">Fourty Percentile</td>
+                        </tr>
+                        <tr>
+                            <td id="thirtyColor">
+                                <svg width="15" height="15">
+                                    <rect id="7Block" width="15" height="15" class="thirtyPercentile" />
+                                </svg>
+                            </td>
+                            <td id="thirtyText" class="keyText">Thirty Percentile</td>
+                        </tr>
+                        <tr>
+                            <td id="twentyColor">
+                                <svg width="15" height="15">
+                                    <rect id="8Block" width="15" height="15" class="twentyPercentile" />
+                                </svg>
+                            </td>
+                            <td id="twentyText" class="keyText">Twenty Percentile</td>
+                        </tr>
+                        <tr>
+                            <td id="tenColor">
+                                <svg width="15" height="15">
+                                    <rect id="9Block" width="15" height="15" class="tenPercentile" />
+                                </svg>
+                            </td>
+                            <td id="tenText" class="keyText">Ten Percentile</td>
+                        </tr>
+                        <tr>
+                            <td id="zeroColor">
+                                <svg width="15" height="15">
+                                    <rect id="10Block" width="15" height="15" class="zeroPercentile" />
+                                </svg>
+                            </td>
+                            <td id="zeroText" class="keyText">Zero Percentile</td>
+                        </tr>
+                        <tr>
+                            <td id="noDataColor">
+                                <svg width="15" height="15">
+                                    <rect width="15" height="15" class="noData" />
+                                </svg>
+                            </td>
+                            <td id="noDataText" class="keyText">No Data</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-12 well controlContainer " id="dataSets">
+            <h4 class="controlContainer instructions">Select Data to Display</h4>
+            <div class="dropdown">
+                <button id="datasetDropDown" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Data
+                    <span class="caret"></span></button>
+                <ul id="datasetMenu" class="dropdown-menu">
+                </ul>
+                <span id="selectedYear"></span>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-12 well controlContainer" id="controlPanelContainer">
+            <div class="controlContainerHeading">Year to Display:&nbsp<span id="yearsDisplayed"></span></div>
+            <div>
+                <div class="col-sm-1 col-md-1">
+                    <span class="instructions" id="minYear">min</span>
+                </div>
+                <div class="col-sm-1 col-md-1">
+                    <button id="decrementYear" class="vcenter btn yearChangeButton">
+                        <span class="glyphicon glyphicon-minus"></span>
+                    </button>
+                </div>
+                <div id="yearSelectSlider" class="col-sm-8 col-md-8 vcenter">
+                </div>
+                <div class="col-sm-1 col-md-1">
+                    <button id="incrementYear" class="btn yearChangeButton">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div>
+                <div class="col-sm-1 col-md-1">
+                    <span class="instructions" id="maxYear">max</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+
+    </div>
+
+    </div>
+
+</body>
+<script src="./js/chloropleth.js"></script>
+<script src="./js/engine.js"></script>
+<script src="./js/getCountryData.js"></script>
+<script src="./js/datasetMetaData.js"></script>
+<script src="./js/normalizeCountryNames.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/1.7.0/d3-legend.min.js"></script>
+
+</html>

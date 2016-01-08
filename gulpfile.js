@@ -12,12 +12,98 @@ var gulp = require('gulp'),
   uglifycss = require('gulp-uglifycss'),
   connect = require('gulp-connect'),
   scp = require('gulp-scp2');   //used for deployment to server
+  var mainBowerFiles = require('main-bower-files');
+  var gulpFilter = require('gulp-filter');
+  var rename = require('gulp-rename');
+  var uncss = require('gulp-uncss');
+  var runSequence = require('run-sequence');
   
 var secrets = require('./secrets.json');
 
   
-  
+//copy the html files from root of source directory to to the dist directory, 
+//  and replace references to vender js, my js, and css files  
+gulp.task("html", function(){
+  gulp.src("./source/*.html")
+    .pipe(useref())
+    .pipe(gulp.dest("./dist/"));
+});
 
+gulp.task('cleanjs', function () {
+  return gulp.src(['./dist/js/*'], { read: false })
+    .pipe(clean());
+});
+
+gulp.task('cleancss', function () {
+  return gulp.src(['./dist/css/*'], { read: false })
+    .pipe(clean());
+});
+
+gulp.task("js", ['cleanjs'], function(){
+  runSequence('cleanjs', ['vendorjs', 'custjs', 'copyDatasets', 'copyWorkers']);
+});
+
+//concat, minify, and copy all the vendor js files to the dist js directory
+gulp.task("vendorjs", function(){
+  var jsFilter = gulpFilter('*.js');
+  
+    //get the list of main Bower files
+    return gulp.src(mainBowerFiles({
+      paths:{
+        bowerDirectory: './source/bower_components',
+        bowerJson: './source/bower.json'
+      }
+    }))
+      .pipe(plumber())
+      .pipe(jsFilter)   //only want the js files
+      .pipe(concat('vendor.min.js'))
+      .pipe(uglify())
+      .pipe(gulp.dest("./dist/js/"));
+});
+
+gulp.task("copyDatasets", function(){
+  gulp.src("./source/dataSets/*")
+    .pipe(plumber())
+      .pipe(gulp.dest("./dist/datasets/"));
+})
+
+gulp.task("copyWorkers", function(){
+  gulp.src([
+    "./source/js/getDistancePlotWorker.js", 
+    "./source/js/getPlotDataWorker.js",
+    "./source/js/datamaps.world.min.js",
+    "./source/js/getCountryData.js"])
+    .pipe(plumber())
+      .pipe(gulp.dest("./dist/js/"));
+})
+
+//concat, minify, and copy all the custom js files to the dist js directory
+gulp.task("custjs",  function () {
+  gulp.src(["./source/js/chloropleth.js",
+    "./source/js/datasetMetaData.js",
+    "./source/js/scatterPlot.js",
+    "./source/js/d3.tip.v0.6.3.js",
+    "./source/js/normalizeCountryNames.js",
+    "./source/js/engine.js"])
+    .pipe(plumber())
+    .pipe(concat('custom.js'))
+    .pipe(gulp.dest("./dist/js/"));
+
+});
+
+//concat, minify, and copy css files to dist css directory
+gulp.task("css", ['cleancss'], function(){
+    gulp.src("./source/css/*.css")
+    .pipe(plumber())
+    .pipe(uncss({
+      html: ['./source/*.html']
+    }))
+    .pipe(concat('styles.css'))
+    .pipe(uglifycss({
+      "max-line-len": 80
+    }))
+    .pipe(gulp.dest("./dist/css/"));
+});
 
 //open dev files in server
 gulp.task('connectDev', function () {
