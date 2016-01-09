@@ -1727,7 +1727,7 @@ function getPlotData(callback, xAxisDatasetInfo, yAxisDatasetInfo){
 	var yScaleType = "linear";
 	var ordinalScaleDataSets =["conflict"];	//these sets use ordinal scales
 	
-
+	//change the scale if needed
 	if(_.indexOf(ordinalScaleDataSets, xAxisShortName) !== -1){
 		xScaleType = "ordinal"
 	}

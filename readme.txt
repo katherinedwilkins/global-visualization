@@ -1,0 +1,1 @@
+tool to visualize global indices related to country economy, corruption, refugees in/out, etc.  Visualize using a global chloropleth, or scatterplots to find correlations.

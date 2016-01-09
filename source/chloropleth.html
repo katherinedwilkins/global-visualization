@@ -2,40 +2,28 @@
 
 <head>
     <title>Chloropleth: World Index Visualizations</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
-    <script src="./js/datamaps.world.min.js"></script>
-    <script src="./js/topojson.v0.min.js"></script>
-    <script src="./js/async.js"></script>
+   <!-- build:js js/vendor.min.js -->
+		<script src = "./bower_components/d3/d3.js" ></script>
+        <script src = "./bower_components/topojson/topojson.js"></script>
+        <script src = "./bower_components/async/lib/async.js"></script>
+		<script src = "./bower_components/jquery/dist/jquery.js"></script>
+        <script src = "./bower_components/jquery-ui/jquery-ui.js"></script>
+		<script src = "./bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src = "./bower_components/underscore/underscore.js"></script>
+		<script src = "./bower_components/d3-legend/d3-legend.js"></script>
+        <script src = "./bower_components/jstat/dist/jstat.js"></script>
+		<!-- endbuild -->
+		
+		<script src="./js/datamaps.world.min.js"></script>
+        
+  
 
-    <script src="./js/utilities.js"></script>
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-
-    <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
-
-
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="./js/bootstrap-switch.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="./css/bootstrap-switch.min.css">
-
-    <!--<script src="./js/bootstrap-slider.js"></script>-->
-    <!-- Azure Mobile Web Services reference -->
-    <!--<script src="http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.2.7.min.js"></script>
-        -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="./css/styles.css" />
-    <!--<link rel="stylesheet" type="text/css" href="./css/bootstrap-slider.css" />-->
-    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
-
+        <!-- build:css css/cstyles.css -->
+        <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="./css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="./css/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="./css/styles.css">
+        <!-- endbuild -->
 </head>
 
 <body>
@@ -193,11 +181,13 @@
     </div>
 
 </body>
-<script src="./js/chloropleth.js"></script>
-<script src="./js/engine.js"></script>
-<script src="./js/getCountryData.js"></script>
-<script src="./js/datasetMetaData.js"></script>
-<script src="./js/normalizeCountryNames.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/1.7.0/d3-legend.min.js"></script>
-
+	<!-- build:js js/custom.js -->
+	<script src="./js/utilities.js"></script>
+	<script src="./js/datasetMetaData.js"></script>
+	<script src="./js/d3.tip.v0.6.3.js"></script>	
+	<script src="./js/normalizeCountryNames.js"></script>
+	<script src="./js/engine.js"></script>
+	<script src="./js/getCountryData.js"></script>
+	<!-- endbuild -->
+    <script src="./js/chloropleth.js"></script>
 </html>

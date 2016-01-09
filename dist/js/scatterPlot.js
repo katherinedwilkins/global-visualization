@@ -33,7 +33,7 @@ window.onload = function () {
 
     ],// optional callback
     function(err, results){
-         console.log("**** loaded ****");
+         void 0;
          $("#shade").hide();
     });
 	createChartArea();
@@ -43,7 +43,7 @@ window.onload = function () {
 	});
 
 	if(typeof(Worker)=="undefined"){
-		console.log("webworker not supported");
+		void 0;
 	}
 	//instantiate the slider
 	updateSlider(startYear, new Date().getFullYear());
@@ -124,7 +124,7 @@ function drawUpdatedPlot(plotInfo, callback) {
 	//clear the current plot
 	$("#scatterPlotSVG").empty();
 
-	console.log(dataset.length + " records found");
+	void 0;
 	var xScale = createScale(plotInfo.xScaleType, "x", dataset)
 	var yScale = createScale(plotInfo.yScaleType, "y", dataset);
 
@@ -152,7 +152,7 @@ function drawUpdatedPlot(plotInfo, callback) {
 	}
 	else {
 		leftPadding = 95;
-		console.log("leftPadding = " + leftPadding);
+		void 0;
 	}
 		
 	//put the axis on the chart	
@@ -321,17 +321,12 @@ function createScale(scaleType, axis, data) {
 			switch (axis) {
 				case ("x"):
 					scale = d3.scale.linear();
-					scale.domain([
-						Math.min(0, d3.min(data, function (d) { return d[1] })),
-						d3.max(data, function (d) { return d[1] })
-						]);
+					scale.domain([0, d3.max(data, function (d) { return d[1] })]);
 					scale.range([leftPadding, w - padding]);
 					break;
 				case ("y"):
 					scale = d3.scale.linear();
-					scale.domain([
-						Math.min(0, d3.min(data, function (d) { return d[2] })),
-						d3.max(data, function (d) { return d[2] })]);
+					scale.domain([0, d3.max(data, function (d) { return d[2] })]);
 					scale.range([h - bottomPadding, padding]);
 					break;
 			}

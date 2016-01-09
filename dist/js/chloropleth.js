@@ -14,14 +14,14 @@ window.onload = function () {
 
     ],// optional callback
     function(err, results){
-         console.log("**** loaded ****");
+         void 0;
          $("#shade").hide();
     });
     loadTopoJSON();
     fillDropDownMenu();
 
     if (typeof (Worker) == "undefined") {
-        console.log("webworker not supported");
+        void 0;
     }
     
     //instantiate the slider
@@ -54,7 +54,7 @@ window.onload = function () {
 
 
 function datasetSelected(event) {
-    console.log("here");
+    void 0;
 }
 
 // $('input:radio').on('click', function (e) {
@@ -98,7 +98,7 @@ function setSliderMaxAndMinYears(dataPaths) {
             }
         }
     }
-    console.log(minYear + ", " + maxYear);
+    void 0;
     $('#yearSelectSlider').slider("option", "min", Number(minYear));
     $('#yearSelectSlider').slider("option", "max", Number(maxYear));
     updateSliderYearsReadouts();
@@ -123,7 +123,9 @@ function updateChloropleth() {
 
         var year = $("#yearSelectSlider").slider("option", "value");
         var data = getChloroplethData(dataPaths.shortName, year);
-
+    
+    
+    
         //for use when the lowsest number is good
         var normalPercentileScale = d3.scale.quantile()
             .domain([
@@ -153,13 +155,16 @@ function updateChloropleth() {
             .domain([0, 10])
             .range(d3.range(10).map(function (i) { return "cpi" + i; }));   
     
+    
+    
+    
         //change all the countries to no data first
         $(".land").attr("class", "land noData");
         for (var i = 0; i < data.length; i++) {
             if (data[i].value) {
                 //$("#" + data[i].country).css("fill", "red");
                 //console.log(data[i].country);
-                console.log(data[i].value);
+                void 0;
                 if (data[i].value) {
                     var color = "black";
                     switch (datasetInfo[dataPaths.shortName].scale) {
@@ -173,7 +178,7 @@ function updateChloropleth() {
                             color = CPIScale(data[i].value);
                             break;
                         default:
-                            console.log("error determining scale");
+                            void 0;
 
                     }
 
@@ -217,7 +222,7 @@ function updateChloropleth() {
                     break;
                 break;
                 default:
-                    console.log("error determining scale");
+                    void 0;
     
             }
         
@@ -242,7 +247,7 @@ function getFormat(datasetName){
         case "billions":
             return d3.format("$.0f");
         default:
-            console.log("error determining number format");
+            void 0;
             return d3.format(""); 
     }
 }

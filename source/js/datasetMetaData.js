@@ -100,9 +100,9 @@ var datasetInfo ={
 		scale: "UPIconflict",
 		format: "UPIconflict"
 	},
-	distasters: {
-		name:	"Disasters",
-		shortName: "disaster",
+	disasters: {
+		name:	"Disasters (total affected)",
+		shortName: "disasters",
 		source: "EM-DAT: The International Disaster Database",
 		link: "http://www.emdat.be/",
 		filename: "emdat-Disasters.csv",

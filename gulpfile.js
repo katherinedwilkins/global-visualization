@@ -17,6 +17,8 @@ var gulp = require('gulp'),
   var rename = require('gulp-rename');
   var uncss = require('gulp-uncss');
   var runSequence = require('run-sequence');
+  var stripDebug = require('gulp-strip-debug');
+
   
 var secrets = require('./secrets.json');
 
@@ -41,6 +43,26 @@ gulp.task('cleancss', function () {
 
 gulp.task("js", ['cleanjs'], function(){
   runSequence('cleanjs', ['vendorjs', 'custjs', 'copyDatasets', 'copyWorkers']);
+});
+
+
+gulp.task("buildDist", function(){
+  runSequence("clean", ['vendorjs', 'custjs', 'copyDatasets', 
+  'copyWorkers', "html", "copyCleanCustJs", "copyTopoJSONData"]);
+});
+
+//copy plain old html files to the dist directory, change js, css, etc. refs in process
+gulp.task("html", function(){  gulp.src("./source/*.html")
+    .pipe(plumber())
+    .pipe(useref())
+    .pipe(gulp.dest("./dist/"));
+});
+
+//copy plain old html files to the dist directory, change js, css, etc. refs in process
+gulp.task("copyTopoJSONData", function(){  gulp.src("./source/topoJSONData/*")
+    .pipe(plumber())
+    .pipe(useref())
+    .pipe(gulp.dest("./dist/topoJSONData/"));
 });
 
 //concat, minify, and copy all the vendor js files to the dist js directory
@@ -77,16 +99,29 @@ gulp.task("copyWorkers", function(){
       .pipe(gulp.dest("./dist/js/"));
 })
 
+//copy scatterplot.js and chloropleth.js directly
+gulp.task("copyCleanCustJs",  function () {
+  gulp.src([
+      "./source/js/chloropleth.js",
+      "./source/js/scatterPlot.js",
+    ])
+    .pipe(stripDebug())
+    .pipe(gulp.dest("./dist/js/"));
+
+});
+
 //concat, minify, and copy all the custom js files to the dist js directory
 gulp.task("custjs",  function () {
-  gulp.src(["./source/js/chloropleth.js",
+  return gulp.src(["./source/js/chloropleth.js",
     "./source/js/datasetMetaData.js",
     "./source/js/scatterPlot.js",
     "./source/js/d3.tip.v0.6.3.js",
     "./source/js/normalizeCountryNames.js",
     "./source/js/engine.js"])
     .pipe(plumber())
+    .pipe(stripDebug())
     .pipe(concat('custom.js'))
+    
     .pipe(gulp.dest("./dist/js/"));
 
 });
@@ -179,9 +214,7 @@ gulp.task('clean', function () {
     .pipe(clean());
 });
 
-gulp.task('builddist', ['clean', 'minjs'], function () {
-  console.log("building clean");
-});
+
 
 gulp.task('deploy', function () {
   return gulp.src('./dist/**/*')
