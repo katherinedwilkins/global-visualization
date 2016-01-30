@@ -35,7 +35,7 @@ var datasetInfo ={
 		fileName :"country regional and world GDP.csv",
 		active: true,
 		scale: "normal", //normal scale is used when a high data value is desirable
-		format: "billions"
+		format: "money"
 	},
 	gdpCapita: {
 		name:	"Per Capita GDP",
@@ -63,7 +63,7 @@ var datasetInfo ={
 		fileName: "Refugee_Numbers_UNdata_Export_20151029_232124036.csv",
 		active: true,
 		scale: "inverse", //inverse scale is used when a lower data value is desirable
-		format: "wholeNumber"
+		format: "longNumber"
 	},
 	refugeesOut: {
 		name:	"Refugees Out",
@@ -72,7 +72,7 @@ var datasetInfo ={
 		filename: "Refugee_Numbers_UNdata_Export_20151029_232124036.csv",
 		active: true,
 		scale: "inverse",
-		format: "wholeNumber"
+		format: "longNumber"
 	},
 	refugeesPercentPopulation: {
 		name:	"Refugees as Percent of Population",
@@ -81,7 +81,6 @@ var datasetInfo ={
 		active: false,
 		scale: "inverse",
 		format: "percent"
-		
 	},
 	homicidesCount: {
 		name:	"Homicide Count",
@@ -95,7 +94,7 @@ var datasetInfo ={
 	homicidesRate: {
 		name:	"Homicides per 100,000",
 		shortName: "homicidesRate",
-		source: "United Nations ",
+		source: "United Nations",
 		fileName: "un homicide statistics.csv",
 		active: true,
 		scale: "inverse",
@@ -126,11 +125,11 @@ var datasetInfo ={
 		filename: "prio 124920_1ucdpprio-armed-conflict-dataset_v.4-2015.csv",
 		active: true,
 		scale: "UPIconflict",
-		format: "UPIconflict"
+		format: "wholeNumber"
 	},
-	distasters: {
-		name:	"Disasters",
-		shortName: "disaster",
+	disasters: {
+		name:	"Disasters (total affected)",
+		shortName: "disasters",
 		source: "EM-DAT: The International Disaster Database",
 		link: "http://www.emdat.be/",
 		filename: "emdat-Disasters.csv",
@@ -165,7 +164,7 @@ var datasetInfo ={
 		source: "Institute for Economics and Peace",
 		link: "http://wikiprogress.org/data/dataset/global-peace-index",
 		fileName: "global_peace_index.csv",
-		active: true,
+		active: false,
 		scale: "normal",
 		format: "decimal"
 	},
@@ -185,7 +184,7 @@ var datasetInfo ={
 		source: "Gib­ney, Mark, Linda Cor­nett, Reed Wood, Peter Hasch­ke, and Daniel Arnon",
 		fileName: "political terror scale - PTS2015.csv",
 		link: "ht­tp://www.polit­ic­al­ter­rorscale.org",
-		active: true,
+		active: false,
 		scale: "inverse",
 		format: "wholeNumber"
 	},
@@ -195,7 +194,7 @@ var datasetInfo ={
 		source: "Gib­ney, Mark, Linda Cor­nett, Reed Wood, Peter Hasch­ke, and Daniel Arnon",
 		fileName: "political terror scale - PTS2015.csv",
 		link: "ht­tp://www.polit­ic­al­ter­rorscale.org",
-		active: true,
+		active: false,
 		scale: "inverse",
 		format: "wholeNumber"
 	},
@@ -205,7 +204,7 @@ var datasetInfo ={
 		source: "Gib­ney, Mark, Linda Cor­nett, Reed Wood, Peter Hasch­ke, and Daniel Arnon",
 		fileName: "political terror scale - PTS2015.csv",
 		link: "ht­tp://www.polit­ic­al­ter­rorscale.org",
-		active: true,
+		active: false,
 		scale: "inverse",
 		format: "wholeNumber"
 	},
@@ -215,11 +214,23 @@ var datasetInfo ={
 		source: "Gib­ney, Mark, Linda Cor­nett, Reed Wood, Peter Hasch­ke, and Daniel Arnon",
 		link: "ht­tp://www.polit­ic­al­ter­rorscale.org",
 		fileName: "political terror scale - SVS2014.csv",
-		active: true,
+		active: false,
 		scale: "inverse",
 		format: "wholeNumber"
-	}
-	
+	},
+	getNumberDatasets : function(){
+        var numSets = 0;
+        for (var dataset in datasetInfo){
+            if(datasetInfo.hasOwnProperty(dataset)){
+                if(datasetInfo[dataset].active){
+                    numSets ++;
+                }
+            }
+        }
+        console.log("loading " + numSets + " files");
+        return numSets;
+        
+    }
 }
 // d3.tip
 // Copyright (c) 2013 Justin Palmer
@@ -751,7 +762,7 @@ function normalizeCountryName(countryName){
 	}
 }
 
-
+"use strict";
 
 //the object that will end up holding all of the data for all of the countries
 var countryData = {};
@@ -811,6 +822,18 @@ function getDataPath(dataType){
 	var path ="";
 	var fullPath = "";
 	switch(dataType){
+        case "HDI":
+			path ="HDI"
+			fullPath= "HDI.INSERT_YEAR"
+		break;
+        case "population":
+			path ="Population"
+			fullPath= "Population.INSERT_YEAR"
+		break;
+        case "disasters":
+			path ="disasters"
+			fullPath= "disasters.INSERT_YEAR.totalAffecte"
+		break;
 		case "gdpCountry":
 			path ="GDP"
 			fullPath= "GDP.INSERT_YEAR.raw"
@@ -950,7 +973,10 @@ function getDataPath(dataType){
 //fill in country name and code informaiton on the countryData object
 //each country will be a seperate object within the countryData object
 function loadCountryData(callback){
-	d3.csv("./dataSets/countries and two digit codes-2.csv", function(data){
+    var numSets = datasetInfo.getNumberDatasets();
+    $( "#progressbar" ).progressbar("option", "max", numSets+1);
+    
+	d3.csv("./datasets/countries and two digit codes-2.csv", function(data){
 		for(var i=0; i<data.length; i++){
 			countryData[data[i].Name] = {
 				region: data[i].Region,
@@ -968,6 +994,8 @@ function loadCountryData(callback){
 			threeAlphaLookup[data[i]["Alpha-3 code"]] = data[i].Name;
 		}
 		countryData.numCountries = data.length;
+        $("#shadeMessage").text("Country identifier data loaded.");
+        $( "#progressbar" ).progressbar("option", "value", $( "#progressbar" ).progressbar("option","value")+1);
 
 		// loadGDP(callBacksInProgress);
 		//load all the data
@@ -988,8 +1016,8 @@ function loadCountryData(callback){
 			loadSocialViolenceScale,
 			loadGDPPerCapta,
 			loadDistanceData	//distances between capitals
-		], callback);	
-			
+            ], callback);
+		//], callback);		
 	});
 
 }
@@ -1008,7 +1036,7 @@ function normalizeData(){
 
 
 function loadRefugeeNumbers(callback){
-	d3.csv("./dataSets/Refugee_Numbers_UNdata_Export_20151029_232124036.csv", function(data){
+	d3.csv("./datasets/Refugee_Numbers_UNdata_Export_20151029_232124036.csv", function(data){
 				//names to exclude when parsing corruption index
 
 		var fugeeCounter = 0;
@@ -1076,13 +1104,15 @@ function loadRefugeeNumbers(callback){
 				countryData[destCountry].refugeeData[year].refugeesIn.value += numRefugees;
 			}
 		}
-		console.log("loadRefugeeNumbers complete. Total refugees = " + fugeeCounter);
+        $("#shadeMessage").text("Refugee numbers loaded.");
+		console.log("loadRefugeeNumbers complete.");
+        $( "#progressbar" ).progressbar( "option", "value", $( "#progressbar" ).progressbar("option","value")+2);
 		return callback();
 	});
 }
 
 function loadCorruptionPerceptionIndex(callback){
-	d3.csv("./dataSets/corruption perception index.csv", function(data){
+	d3.csv("./datasets/corruption perception index.csv", function(data){
 		//parse the dataset
 		
 		//loop through the countries
@@ -1121,13 +1151,15 @@ function loadCorruptionPerceptionIndex(callback){
 			}
 		}
 		//console.table(countryData);
+        $("#shadeMessage").text("CPI data loaded.");
 		console.log("loadCorruptionPerceptionIndex complete");
+                $( "#progressbar" ).progressbar( "option", "value", $( "#progressbar" ).progressbar("option","value")+1);
 		return callback();
 	});
 }
 
 function loadPoliticalTerrorScale(callback){
-	d3.csv("./dataSets/" + datasetInfo["PTS-HRW"].fileName, function(data){
+	d3.csv("./datasets/" + datasetInfo["PTS-HRW"].fileName, function(data){
 		for(var i=0; i<data.length; i++){
 			var countryName = data[i]["Country"];
 			//console.log(countryName);
@@ -1152,13 +1184,15 @@ function loadPoliticalTerrorScale(callback){
 					//console.log(amnestyInternational + ", " + usStateDepartment + ", " + humanRightsWatch + " : avg = " + average);
 				}
 		}
+        $("#shadeMessage").text("Political Terror Scale loaded.");
 		console.log("loadPoliticalTerrorScale complete");
+                $( "#progressbar" ).progressbar( "option", "value", $( "#progressbar" ).progressbar("option","value")+3);
 		return callback();
 	});
 }
 
 function loadSocialViolenceScale(callback){
-	d3.csv("./dataSets/" + datasetInfo.SVS.fileName, function(data){
+	d3.csv("./datasets/" + datasetInfo.SVS.fileName, function(data){
 		for(var i=0; i<data.length; i++){
 			var countryName = data[i]["Country"];
 			//console.log(countryName);
@@ -1170,14 +1204,16 @@ function loadSocialViolenceScale(callback){
 					}
 				}
 		}
+        $("#shadeMessage").text("Social Violence Scale loaded.");
 		console.log("loadSocialViolencScale complete");
+                $( "#progressbar" ).progressbar( "option", "value", $( "#progressbar" ).progressbar("option","value")+1);
 		return callback();
 	});
 }
 
 
 function loadGDP(callback){
-	d3.csv("./dataSets/country regional and world GDP.csv", function(data){
+	d3.csv("./datasets/country regional and world GDP.csv", function(data){
 		
 		
 		for(var i=0; i<data.length; i++){
@@ -1210,6 +1246,8 @@ function loadGDP(callback){
 					};
 			}
 		}
+        $("#shadeMessage").text("GDP loaded.");
+        $( "#progressbar" ).progressbar( "option", "value", $( "#progressbar" ).progressbar("option","value")+1);
 		console.log("loadGDP complete");
 		return callback();
 	});
@@ -1217,7 +1255,7 @@ function loadGDP(callback){
 
 
 function loadGDPPerCapta(callback){
-		d3.csv("./dataSets/ny.gdp.pcap.cd_Indicator_en_csv_v2.csv", function(data){	
+		d3.csv("./datasets/ny.gdp.pcap.cd_Indicator_en_csv_v2.csv", function(data){	
 		
 		for(var i=0; i<data.length; i++){
 			var countryName = data[i]["Country Name"];
@@ -1232,13 +1270,15 @@ function loadGDPPerCapta(callback){
 				}
 			}
 		}
+        $("#shadeMessage").text("Per Capita GDP loaded.");
+        $( "#progressbar" ).progressbar( "option", "value", $( "#progressbar" ).progressbar("option","value") + 1);
 		console.log("loadGDPPerCapta complete");
 		return callback();
 	});
 }
 
 function loadGPI(callback){
-		d3.csv("./dataSets/global_peace_index.csv", function(data){
+		d3.csv("./datasets/global_peace_index.csv", function(data){
 		
 		for(var i=0; i<data.length; i++){
 			var countryName = data[i]["Country"];
@@ -1254,13 +1294,15 @@ function loadGPI(callback){
 				}
 			}
 		}
+        $("#shadeMessage").text("Global Peace Index loaded.");
+        $( "#progressbar" ).progressbar( "option", "value", $( "#progressbar" ).progressbar("option","value") + 1);
 		console.log("loadGPI complete");
 		return callback();
 	});
 }
 
 function loadHomicides(callback){
-	d3.csv("./dataSets/un homicide statistics.csv", function(data){
+	d3.csv("./datasets/un homicide statistics.csv", function(data){
 		
 		for(var i=0; i<data.length; i++){
 			var countryName = data[i]["Country or Area"];
@@ -1293,6 +1335,8 @@ function loadHomicides(callback){
 					
 			}
 		}
+        $("#shadeMessage").text("Homocide data loaded.");
+        $( "#progressbar" ).progressbar( "option", "value", $( "#progressbar" ).progressbar("option","value") + 2);
 		console.log("loadHomicides complete");
 		return callback();
 	});
@@ -1300,7 +1344,7 @@ function loadHomicides(callback){
 
 
 function loadCashSurplus(callback){
-	d3.csv("./dataSets/un cash surplus-deficit as percent of GDP.csv", function(data){
+	d3.csv("./datasets/un cash surplus-deficit as percent of GDP.csv", function(data){
 		
 		for(var i=0; i<data.length; i++){
 			var countryName = data[i]["Country or Area"];
@@ -1319,6 +1363,8 @@ function loadCashSurplus(callback){
 						trend : {trendType: null, counter: null}};
 			}
 		}
+        $( "#progressbar" ).progressbar( "option", "value", $( "#progressbar" ).progressbar("option","value") + 1);
+        $("#shadeMessage").text("Cash Surplus data loaded.");
 		console.log("loadCashSurplus complete");
 		return callback();
 	});
@@ -1326,7 +1372,7 @@ function loadCashSurplus(callback){
 
 
 function loadPercentInternet(callback){
-	d3.csv("./dataSets/un percentage of indviduals using the Internet.csv", function(data){
+	d3.csv("./datasets/un percentage of indviduals using the Internet.csv", function(data){
 
 		for(var i=0; i<data.length; i++){
 			var countryName = data[i]["Country or Area"];
@@ -1346,13 +1392,15 @@ function loadPercentInternet(callback){
 
 			}
 		}
+        $( "#progressbar" ).progressbar( "option", "value", $( "#progressbar" ).progressbar("option","value") + 1);
+        $("#shadeMessage").text("Percent Internet data loaded.");
 		console.log("loadPercentInternet complete");
 		return callback();
 	});
 }
 
 function loadPopulation(callback){
-	d3.csv("./dataSets/population figures for countries and regions.csv", function(data){
+	d3.csv("./datasets/population figures for countries and regions.csv", function(data){
 
 		for(var i=0; i<data.length; i++){
 			var countryName = data[i]["Country Name"];
@@ -1369,13 +1417,15 @@ function loadPopulation(callback){
 					countryData[countryName]["Population"][data[i].Year] = Number(data[i].Value);
 			}
 		}
+        $( "#progressbar" ).progressbar( "option", "value", $( "#progressbar" ).progressbar("option","value") + 1);
+        $("#shadeMessage").text("Population numbers loaded.");
 		console.log("loadPopulation complete");
 		return callback();
 	});
 }
 
 function loadHDI(callback){
-	d3.csv("./dataSets/un human development index - y8j2-3vi9.csv", function(data){
+	d3.csv("./datasets/un human development index - y8j2-3vi9.csv", function(data){
 
 		for(var i=0; i<data.length; i++){
 			var countryName = data[i]["Country"]; 
@@ -1384,7 +1434,7 @@ function loadHDI(callback){
 					if(_.indexOf(exclusionNames, countryName)===-1){	//don't execute for any data earlier than the starYear
 					
 						//normalize the country name
-						countryName = normalizeCountryName(countryName)
+						countryName = normalizeCountryName(countryName);
 						//console.log(countryName);
 						
 						//if no object exists for this country name, create one
@@ -1399,13 +1449,15 @@ function loadHDI(callback){
 				
 			}
 		}
+        $( "#progressbar" ).progressbar( "option", "value", $( "#progressbar" ).progressbar("option","value") + 1);
+        $("#shadeMessage").text("Human Development Index loaded.");
 		console.log("loadHDI complete");
 		return callback();
 	});
 }
 
 function loadConflict(callback){
-	d3.csv("./dataSets/prio 124920_1ucdpprio-armed-conflict-dataset_v.4-2015.csv", function(data){
+	d3.csv("./datasets/prio 124920_1ucdpprio-armed-conflict-dataset_v.4-2015.csv", function(data){
 		
 		for(var i=0; i<data.length; i++){
 			var countryName = data[i]["Location"];
@@ -1426,13 +1478,15 @@ function loadConflict(callback){
 						trend : {trendType: null, counter: null}};
 			}
 		}
+        $( "#progressbar" ).progressbar( "option", "value", $( "#progressbar" ).progressbar("option","value") + 1);
+        $("#shadeMessage").text("Conflict data loaded.");
 		console.log("loadConflict complete");
 		return callback();
 	});
 }
 
 function loadWorldBankHomicides(callback){
-		d3.csv("./dataSets/world bank homicides.csv", function(data){
+		d3.csv("./datasets/world bank homicides.csv", function(data){
 		
 		for(var i=0; i<data.length; i++){
 			var countryName = normalizeCountryName(data[i]["Country Name"]);
@@ -1451,13 +1505,15 @@ function loadWorldBankHomicides(callback){
 				}
 			}
 		}
+        $( "#progressbar" ).progressbar( "option", "value", $( "#progressbar" ).progressbar("option","value") + 1);
+        $("#shadeMessage").text("World Bank Homocide numbers loaded.");
 		console.log("loadWorldBankHomicides complete");
 		return callback();
 	});
 }
 
 function loadDistanceData(callback){
-		d3.csv("./dataSets/capDist.csv", function(data){
+		d3.csv("./datasets/capdist.csv", function(data){
 
 
 		for(var i=0; i<data.length; i++){
@@ -1485,13 +1541,15 @@ function loadDistanceData(callback){
 				//console.log (origin + " not found");
 			}
 		}
+        $( "#progressbar" ).progressbar( "option", "value", $( "#progressbar" ).progressbar("option","value") + 1);
+        $("#shadeMessage").text("Distance data loaded.");
 		console.log("loadDistanceData complete");
 		return callback();
 	});
 }
 
 function loadDisasters(callback){
-	d3.csv("./dataSets/emdat-Disasters.csv", function(data){
+	d3.csv("./datasets/emdat-Disasters.csv", function(data){
 		for(var i=0; i<data.length; i++){
 			var countryName = normalizeCountryName(data[i]["Country name"]);
 			//console.log(countryName);
@@ -1508,6 +1566,8 @@ function loadDisasters(callback){
 				}
 			}
 		}
+        $( "#progressbar" ).progressbar( "option", "value", $( "#progressbar" ).progressbar("option","value") + 1);
+        $("#shadeMessage").text("Disaster data loaded.");
 		console.log("loadDisasters complete");
 		return callback();
 	});
@@ -2289,6 +2349,175 @@ function printHDIToConsole(){
 	printArrayAsCSV(data);
 }
 
+function printMultipleRegressionData(){
+    var data = [];
+    //push the headers 
+    data.push(["Country", "Destination", "Year", "Refugees", "Population", "GDP Per Capita", "Corruption Perception Index", "Conflict", "Distance"]);
+    //loop through each country 
+    for (var country in countryData){
+        if(countryData.hasOwnProperty(country)){
+            //loop through each year in refugeeData object
+            for(var year in countryData[country].refugeeData){
+                if(countryData[country].refugeeData.hasOwnProperty(year)){
+                    //loop through each destination
+                    for(var destination in countryData[country].refugeeData[year].refugeesOut.destinations){
+                        if(countryData[country].refugeeData[year].refugeesOut.destinations.hasOwnProperty(destination)){
+                            //check to see if distance data exists for this country->destintion combo
+                            //console.log(country + "->" + destination);
+                            if(countryData[country].distances && countryData[country].distances[destination]){ 
+                                var distance = countryData[country].distances[destination].kilometers;
+                                //console.log("distance: " + country + "->" + destination + " = " + distance);
+                                //get data for the origin country
+                                var gdpPerCapita = getCountryData(countryData, country, "gdpCapita", year, "value");
+                                var CPI;
+                                if(countryData[country].corruptionPerceptionIndex && countryData[country].corruptionPerceptionIndex[year]){
+                                    CPI = countryData[country].corruptionPerceptionIndex[year].value;
+                                }
+                                var conflict=0;
+                                if(countryData[country].conflict && countryData[country].conflict[year]){
+                                    conflict = 1
+                                }
+                                var refugeesOut = countryData[country].refugeeData[year].refugeesOut.destinations[destination];
+                                var population = countryData[country].Population[year];
+                                if(distance && CPI && population && refugeesOut && gdpPerCapita && distance){
+                                    data.push([country, destination, year,  refugeesOut, population, gdpPerCapita, CPI, conflict, distance]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    for(var i=0; i< data.length; i++){
+        console.log(data[i].join(","));
+    }
+    console.log("*** " + data.length + " records printed ***")
+}
+function printMultipleRegressionData1(){
+    var data = [];
+    //push the headers 
+    data.push(["Country", "Year", "Refugees", "Population", "GDP Per Capita", "Corruption Perception Index", "Conflict"]);
+    //loop through each country 
+    for (var country in countryData){
+        if(countryData.hasOwnProperty(country)){
+            //loop through each year in refugeeData object
+            for(var year in countryData[country].refugeeData){
+                if(countryData[country].refugeeData.hasOwnProperty(year)){                           
+                               
+                                //console.log(country + " " + year);
+                                //get data for the origin country
+                                var gdpPerCapita = getCountryData(countryData, country, "gdpCapita", year, "value");
+                                var CPI;
+                                if(countryData[country].corruptionPerceptionIndex && countryData[country].corruptionPerceptionIndex[year]){
+                                    CPI = countryData[country].corruptionPerceptionIndex[year].value;
+                                }
+                                var conflict=0;
+                                if(countryData[country].conflict && countryData[country].conflict[year]){
+                                    conflict = 1
+                                }
+                                var refugeesOut = countryData[country].refugeeData[year].refugeesOut.value;
+                                var population;
+                                if(countryData[country].Population && countryData[country].Population[year]){
+                                        population = countryData[country].Population[year];
+                                }
+                                if(CPI && population && refugeesOut && gdpPerCapita){
+                                    data.push([country, year, refugeesOut, population, gdpPerCapita, CPI, conflict, ]);
+                                }
+                            
+                        
+                    
+                }
+            }
+        }
+    }
+    for(var i=0; i< data.length; i++){
+        console.log(data[i].join(","));
+    }
+    console.log("*** " + data.length + " records printed ***")
+}
+
+function printMultipleRegressionDataAll(){
+    var data = [];
+    //push the headers 
+    data.push(["Country", "Year", "Refugees Out", "Refugees In", "Population", "GDP Country", "GDP Per Capita", 
+        "Corruption Perception Index", 
+        "Total Homicides", "Homocides per 100k", "Cash Surplus", "Percent Internet", 
+        "Conflict", "Disaster (total Affected)", "HDI", "PTS-HRW", "PTS-DoS", "PTS-AI", "SVS"
+    ]);
+    
+
+                                        
+    //loop through each country 
+    for (var country in countryData){
+        if(countryData.hasOwnProperty(country)){
+            //loop through each year in refugeeData object
+            for(var year in countryData[country].refugeeData){
+                //console.log(country + " : " + year);
+                if(countryData[country].refugeeData.hasOwnProperty(year)){                           
+                               
+                        //console.log(country + " " + year);
+                        //get data for the origin country
+                        var CPI,  population, refugeesOut, gdpPerCapita, gdpCountry,
+                        refugeesIn, homoTot, homoPer, cashSurplus, percentInternet, conflict=0,
+                        disasterTot, HDI, PTSHRW, PTSDoS, PTSAI, SVS;
+                        gdpPerCapita = getCountryData(countryData, country, "gdpCapita", year, "value");
+                        gdpCountry = getCountryData(countryData, country, "gdpCountry", year, "value");
+                        
+                        if(countryData[country].corruptionPerceptionIndex && countryData[country].corruptionPerceptionIndex[year]){
+                            CPI = countryData[country].corruptionPerceptionIndex[year].value;
+                        }
+
+                        if(countryData[country].conflict && countryData[country].conflict[year]){
+                            conflict = 1
+                        }
+                        refugeesOut = countryData[country].refugeeData[year].refugeesOut.value;
+                        refugeesIn = countryData[country].refugeeData[year].refugeesIn.value;
+                        homoTot = getCountryData(countryData, country, "homicidesCount", year, "value");
+                        homoPer = getCountryData(countryData, country, "homicidesRate", year, "value");
+                        cashSurplus = getCountryData(countryData, country, "cashSurplus", year, "value");
+                        percentInternet = getCountryData(countryData, country, "percentInternet", year, "value");
+                        disasterTot = getCountryData(countryData, country, "disasters", year, "value");
+
+                        if(countryData[country].Population && countryData[country].Population[year]){
+                                population = countryData[country].Population[year];
+                        }
+                        if(countryData[country].Population && countryData[country].Population[year]){
+                                population = countryData[country].Population[year];
+                        }
+                        
+                        HDI = getCountryData(countryData, country, "HDI", year, "value");
+                        PTSHRW = getCountryData(countryData, country, "PTS-HRW", year, "value");
+                        PTSDoS = getCountryData(countryData, country, "PTS-DoS", year, "value");
+                        PTSAI = getCountryData(countryData, country, "PTS-AI", year, "value");
+                        SVS = getCountryData(countryData, country, "SVS", year, "value");
+                        data.push([
+                            country, year, refugeesOut, refugeesIn, population, gdpCountry, gdpPerCapita, 
+                            CPI, 
+                            homoTot, homoPer, cashSurplus, percentInternet,
+                            conflict, disasterTot, HDI, PTSHRW, PTSDoS, PTSAI, SVS
+                        ]);
+                        // if(CPI && population && refugeesOut && gdpPerCapita &&  gdpCountry &&
+                        //     refugeesIn && homoTot && homoPer && cashSurplus && percentInternet &&
+                        //     disasterTot && HDI
+                        //     // disasterTot&& PTSHRW&& PTSDoS&& PTSAI&& SVS
+                        // ){
+                            
+                        // }
+                    
+                }
+                else{
+                    console.log("here");
+                }
+            }
+        }
+    }
+    for(var i=0; i< data.length; i++){
+        console.log(data[i].join(","));
+    }
+    console.log("*** " + data.length + " records printed ***")
+}
+
 function printRefugeeDistanceData(year){
 	if(!comprehensive){
 		if(!year){
@@ -2480,7 +2709,7 @@ function getPlotData(callback, xAxisDatasetInfo, yAxisDatasetInfo){
 	var yScaleType = "linear";
 	var ordinalScaleDataSets =["conflict"];	//these sets use ordinal scales
 	
-
+	//change the scale if needed
 	if(_.indexOf(ordinalScaleDataSets, xAxisShortName) !== -1){
 		xScaleType = "ordinal"
 	}
@@ -2509,6 +2738,9 @@ function getPlotData(callback, xAxisDatasetInfo, yAxisDatasetInfo){
 		}
 		else{
 			refugeeType = "neither";
+            //distance only work for either of the refugee items since an origin and destination countries are required
+            alert("Distance data is only available in conjunction with 'Refugees In' or 'Refugees Out'.");
+            return "error";
 		}
 		
 		///determine if distance is on the x or y axis
@@ -2556,7 +2788,7 @@ function getPlotData(callback, xAxisDatasetInfo, yAxisDatasetInfo){
 
 			switch(event.data.messageType){
 				case "update":
-					console.log(event.data.statusMessage)
+					//console.log(event.data.statusMessage)
 				break;
 				case "complete":
 					var plotInfo ={
@@ -2609,6 +2841,9 @@ function getCountryData(countryData, country, dataType, year, dataSuffix){
 			case "refugeesOut":
 					returnValue =  countryData[country].refugeeData[year].refugeesOut[dataSuffix] ? countryData[country].refugeeData[year].refugeesOut[dataSuffix] : null;
 			break;
+            case "population":
+					returnValue =  countryData[country].Population[year] ? countryData[country].Population[year]  : null;
+			break;
 			// case "refugeesPercentPopulation":
 			// 	returnValue =  countryData[country].refugeeData[year].refugeesOut[dataSuffix] ? countryData[country].refugeeData[year].refugeesOut[dataSuffix] : null;
 			// break;
@@ -2645,8 +2880,8 @@ function getCountryData(countryData, country, dataType, year, dataSuffix){
 			case "GPI":
 				returnValue = countryData[country].GPI[year][dataSuffix] ? countryData[country].GPI[year][dataSuffix] : null;
 			break;
-			case "disaster":
-				returnValue = countryData[country].disasters[year][dataSuffix] ? countryData[country].disasters[year][dataSuffix] : null;
+			case "disasters":
+				returnValue = countryData[country].disasters[year].totalAffected? countryData[country].disasters[year].totalAffected: null;
 			break;
 			case "population":
 				returnValue = countryData[country].Population[year] ? countryData[country].Population[year]: null;

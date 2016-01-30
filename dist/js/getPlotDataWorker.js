@@ -1,7 +1,7 @@
 importScripts('getCountryData.js');
 
 self.addEventListener('message', function (event) {
-	console.log("starting webworker");
+	void 0;
 	getPlotDataWorker(
 		event.data.countryData,
 		event.data.beginYear,

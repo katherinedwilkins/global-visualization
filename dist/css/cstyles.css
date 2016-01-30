@@ -1249,14 +1249,33 @@ body .ui-tooltip {
 	background: rgba(0,0,0, 0.5);
 	position: absolute;
 	margin: auto;
+    text-align: center;
 }
 
-.waiting{
+.shadeCenter{
+    color: white;
+ position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /*background: green;*/
+  width: 50%;
+}
+
+.shadeMainMessage{
+	color: white;
+
+}
+.shadeMessage{
 	color: white;
 	text-align: center;
-	position: absolute;               /* 2 */
-   top: 25%;                         /* 3 */
+	position: absolute;               
+    top: 35%;                         
 	width: 80%;
+}
+
+.shadeProgressBar{
+
 }
 
 #formSelection{
@@ -1349,12 +1368,12 @@ svg.map {
   stroke-linecap: round;
   vector-effect: non-scaling-stroke;
 }
-#Hounduras,
+/*#Hounduras,
 #Guatemala,
 #El Salvador,
 #Syria{
 	stroke: MediumVioletRed;
-}
+}*/
 
 .keyText{
 font-size: 12px;	
@@ -1416,6 +1435,9 @@ td{
 .cpi7{fill: #66bd63;}
 .cpi8{fill: #1a9850;}
 .cpi9{fill: #006837;}
+
+.red{fill: red;}
+.white{fill: white;}
 
 
 /*.trendup5,.zeroPercentile,.q0-9{	fill: #006d2c;}

@@ -8,29 +8,48 @@ var bottomPadding = 40;
 var padding = 20;
 
 window.onload = function () {
-    initializeSVG();
-    async.series([
-        loadCountryData,
-
-    ],// optional callback
-    function(err, results){
-         void 0;
-         $("#shade").hide();
-    });
-    loadTopoJSON();
-    fillDropDownMenu();
-
-    if (typeof (Worker) == "undefined") {
-        void 0;
+    if(typeof(Worker)=="undefined"){
+		 $("#shadeMainMessage").text("Browser not supported");
+        $("#shadeMessage").text("This browser does not support all the features required to run this application");
+	}
+    else{
+        //configure the shade 
+        $("#shadeMainMessage").text("Loading Data Files");
+        $("#shadeMessage").hide();
+        $( "#progressbar" ).progressbar({
+        });
+        
+        initializeSVG();
+        async.series([
+            loadCountryData,
+        ],// optional callback
+        function(err, results){
+            $( "#progressbar" ).progressbar( "option", "value", $( "#progressbar" ).progressbar("option","max"));
+            $("#shadeMessage").text("All files loaded.");
+            $("#shade").fadeOut(250);
+        });
+        loadTopoJSON();
+        fillDropDownMenu();
     }
+
     
     //instantiate the slider
     updateChloroplethSlider(startYear, new Date().getFullYear());
 
     $(".datasetMenuItem").click(function (e) {
         selectedDataset = e.currentTarget.id;
+
         updateChloropleth();
-        document.getElementById("selectedYear").innerHTML = datasetInfo[e.currentTarget.id].name;
+        document.getElementById("selectedData").innerHTML = datasetInfo[e.currentTarget.id].name 
+            + " (" + datasetInfo[e.currentTarget.id].source + ")";
+        if($("#yearsDisplayed").text() > $("#yearSelectSlider").slider("option", "max")){
+            $("#yearSelectSlider").slider("option", "value", $("#yearSelectSlider").slider("option", "max"));
+            updateSliderSelectedYearReadout();
+        }
+        else if($("#yearsDisplayed").text() < $("#yearSelectSlider").slider("option", "min")){
+            $("#yearSelectSlider").slider("option", "value", $("#yearSelectSlider").slider("option", "min"));
+            updateSliderSelectedYearReadout();
+        }
     });
     $(".yearChangeButton").click(function (event) {
         switch (event.currentTarget.id) {
@@ -69,7 +88,7 @@ function fillDropDownMenu() {
 
     for (var dataset in datasetInfo) {
         if (datasetInfo.hasOwnProperty(dataset)) {
-            if (datasetInfo[dataset].active) {
+            if (dataset!="distance" && datasetInfo[dataset].active) {
                 var node = document.createElement("LI");
                 node.textContent = datasetInfo[dataset].name;
                 node.className = "datasetMenuItem";
@@ -123,9 +142,7 @@ function updateChloropleth() {
 
         var year = $("#yearSelectSlider").slider("option", "value");
         var data = getChloroplethData(dataPaths.shortName, year);
-    
-    
-    
+
         //for use when the lowsest number is good
         var normalPercentileScale = d3.scale.quantile()
             .domain([
@@ -154,12 +171,15 @@ function updateChloropleth() {
         var CPIScale = d3.scale.quantize()
             .domain([0, 10])
             .range(d3.range(10).map(function (i) { return "cpi" + i; }));   
-    
-    
-    
+            
+        var UPIconflictScale = d3.scale.ordinal()
+            .domain(["no conflict", "conflict"])
+            .range(["white", "red"]);   
     
         //change all the countries to no data first
         $(".land").attr("class", "land noData");
+        
+        //loop through the countries and update their colors
         for (var i = 0; i < data.length; i++) {
             if (data[i].value) {
                 //$("#" + data[i].country).css("fill", "red");
@@ -177,6 +197,12 @@ function updateChloropleth() {
                         case "cpi":
                             color = CPIScale(data[i].value);
                             break;
+                        case "UPIconflict":
+                            color = "white";
+                            if( data[i].value === "conflict"){
+                                color = "red";
+                            }
+                        break;
                         default:
                             void 0;
 
@@ -220,6 +246,11 @@ function updateChloropleth() {
                         .labelFormat(getFormat(dataPaths.shortName))
                         .useClass(true);
                     break;
+                case "UPIconflict":
+                    legend = d3.legend.color()
+                        .scale(UPIconflictScale);
+                        //.useClass(true);
+                    break;
                 break;
                 default:
                     void 0;
@@ -235,9 +266,11 @@ function updateChloropleth() {
 function getFormat(datasetName){
     switch (datasetInfo[datasetName].format){
         case "money":
-            return d3.format("$.0f");
+            return d3.format("$.3s");
         case "wholeNumber":
-            return d3.format(".0f");
+            return d3.format(",.0f");
+        case "longNumber":
+            return d3.format(".3s");    
         case "decimal":
             return d3.format(".2f");
         case "percent":
@@ -293,7 +326,7 @@ var path = d3.geo.path()
 
 function loadTopoJSON() {
 
-    d3.json("/topoJSONData/countriesWithNames.json", function (error, world) {
+    d3.json("./topoJSONData/countriesWithNames.json", function (error, world) {
         if (error) throw error;
         svg.selectAll('path')
             .data(world.features)

@@ -18,6 +18,9 @@ function getCountryData(countryData, country, dataType, year, dataSuffix){
 			case "refugeesOut":
 					returnValue =  countryData[country].refugeeData[year].refugeesOut[dataSuffix] ? countryData[country].refugeeData[year].refugeesOut[dataSuffix] : null;
 			break;
+            case "population":
+					returnValue =  countryData[country].Population[year] ? countryData[country].Population[year]  : null;
+			break;
 			// case "refugeesPercentPopulation":
 			// 	returnValue =  countryData[country].refugeeData[year].refugeesOut[dataSuffix] ? countryData[country].refugeeData[year].refugeesOut[dataSuffix] : null;
 			// break;
@@ -54,8 +57,8 @@ function getCountryData(countryData, country, dataType, year, dataSuffix){
 			case "GPI":
 				returnValue = countryData[country].GPI[year][dataSuffix] ? countryData[country].GPI[year][dataSuffix] : null;
 			break;
-			case "disaster":
-				returnValue = countryData[country].disasters[year][dataSuffix] ? countryData[country].disasters[year][dataSuffix] : null;
+			case "disasters":
+				returnValue = countryData[country].disasters[year].totalAffected? countryData[country].disasters[year].totalAffected: null;
 			break;
 			case "population":
 				returnValue = countryData[country].Population[year] ? countryData[country].Population[year]: null;

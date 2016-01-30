@@ -7,6 +7,8 @@
 //  as part of the distance data.  However, the user could ask for something else
 // refugeeType: either refugeesIn, refugeesOut, or neither
 
+importScripts("./getCountryData.js");
+
 self.addEventListener('message', function (event) {
 	console.log("starting webworker");
 	getDistancePlotData(

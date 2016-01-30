@@ -7,8 +7,10 @@
 //  as part of the distance data.  However, the user could ask for something else
 // refugeeType: either refugeesIn, refugeesOut, or neither
 
+importScripts("./getCountryData.js");
+
 self.addEventListener('message', function (event) {
-	console.log("starting webworker");
+	void 0;
 	getDistancePlotData(
 		event.data.distanceAxis, 
 		event.data.otherAxisName,
@@ -22,7 +24,7 @@ self.addEventListener('message', function (event) {
 
 function getDistancePlotData(distanceAxis, otherAxisName, refugeeType, countryData, beginYear,yearsBack) {
 	var data = [];
-	console.log("running worker");
+	void 0;
 	
 	//if the user picks the somehting other than refugeesOut or refugeesIn for the non-distance axis then still
 	// use the refugeesOut for a look up values

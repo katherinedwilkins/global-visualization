@@ -28,25 +28,35 @@ var symbolScale = d3.scale.ordinal()
 	]);
 
 window.onload = function () {
-	async.series([
-        loadCountryData,
-
-    ],// optional callback
-    function(err, results){
-         void 0;
-         $("#shade").hide();
-    });
-	createChartArea();
-	fillAxisDropdowns();
-	$(".AxisMenuItem").click(function (e) {
-		changeAxisSelection(e);
-	});
-
-	if(typeof(Worker)=="undefined"){
-		void 0;
+    if(typeof(Worker)=="undefined"){
+		 $("#shadeMainMessage").text("Browser not supported");
+        $("#shadeMessage").text("This browser does not support all the features required to run this application");
 	}
-	//instantiate the slider
-	updateSlider(startYear, new Date().getFullYear());
+    else{
+        //configure the shade 
+        $("#shadeMainMessage").text("Loading Data Files");
+        $("#shadeMessage").hide();
+        $( "#progressbar" ).progressbar({
+        });
+        async.series([
+            loadCountryData,
+
+        ],// optional callback
+        function(err, results){
+            $( "#progressbar" ).progressbar( "option", "value", $( "#progressbar" ).progressbar("option","max"));
+            $("#shadeMessage").text("All files loaded.");
+            $("#shade").fadeOut(250);
+        });
+        createChartArea();
+        fillAxisDropdowns();
+        $(".AxisMenuItem").click(function (e) {
+            changeAxisSelection(e);
+        });
+
+        
+        //instantiate the slider
+        updateSlider(startYear, new Date().getFullYear());
+    }
 }
 
 
@@ -87,32 +97,36 @@ function updatePlot() {
 	var xAxisDatasetInfo = datasetInfo[document.getElementById("xAxisSelected").getAttribute("shortName")];
 	var yAxisDatasetInfo = datasetInfo[document.getElementById("yAxisSelected").getAttribute("shortName")];
 	if ((xAxisDatasetInfo) && (yAxisDatasetInfo)) {
-		document.getElementById("waitingMessage").innerHTML = "Please Wait.";
+		$("#shadeMainMessage").text("Building Graph");
 		$("#shade").show();
-
+        //reset the value from previous usage
+        $( "#progressbar" ).progressbar("value", false);   
 		async.waterfall([
 			function (callback) {
-				getPlotData(callback, xAxisDatasetInfo, yAxisDatasetInfo);//, drawUpdatedPlot, callback);
+				var status = getPlotData(callback, xAxisDatasetInfo, yAxisDatasetInfo);//, drawUpdatedPlot, callback);
+                if (status === "error"){
+                    $("#shade").fadeOut(100);
+                }
 			},
-			function (plotInfo, callback) {
-				document.getElementById("waitingMessage").innerHTML = "Please Wait. " + plotInfo.data.length + " data points found";
+			function (plotInfo, callback) {	
 				drawUpdatedPlot(plotInfo, callback);
 			}
 		],
 			function (err, results) {
-				if(results === "done"){
-					$("#shade").fadeOut(1000);
-				}
+					$("#shade").fadeOut(500);
 		});
 	}
 
 }
 
 function drawUpdatedPlot(plotInfo, callback) {
+      
 	var dataset = plotInfo.data;
 	var xAxisDatasetInfo = datasetInfo[document.getElementById("xAxisSelected").getAttribute("shortName")];
 	var yAxisDatasetInfo = datasetInfo[document.getElementById("yAxisSelected").getAttribute("shortName")];
-		
+	
+     $("#progressbar" ).progressbar("option", "max", dataset.length);   
+    	
 	//need to create an array of x values and an array of y values in order to calculate
 	// correlation coefficients using jstat
 	var xArray = [], yArray = [];
@@ -196,35 +210,40 @@ function drawUpdatedPlot(plotInfo, callback) {
 	svg.selectAll("path")
 		.data(dataset)
 		.enter()
-		.append("path")
-		.attr("id", function (d) {
-			return d[0] + "-" + d[3];
-		})
-		.attr("class", "dataPoint")
-		.attr("transform", function (d) { 
-					
-			// add the values to the arrays used to calculate correlations
-			xArray.push(d[1]);
-			yArray.push(d[2]);
-			return "translate(" + xScale(d[1]) + "," + yScale(d[2]) + ")";
-		})
-		.attr("d", function (d) {
-			//console.log(d[4]);
-			return regions[d[4]]();
-		})
-		.style("fill", function (d) { return colorScale(d[3]) })
-		.style("stroke", "#000000")
-		.style("stroke-width", "1")
-		.on('mouseover', tip.show)
-		.on('mouseout', tip.hide)
-		.datum(function (d) {
-			var object = {
-				country: d[0],
-				x: d[1],
-				y: d[2],
-				year: d[3],
-				region: d[4]
-			}
+            .append("path")
+            .attr("id", function (d) {
+                return d[0] + "-" + d[3];
+            })
+            .attr("class", "dataPoint")
+            .attr("transform", function (d) { 
+                        
+                // add the values to the arrays used to calculate correlations
+                xArray.push(d[1]);
+                yArray.push(d[2]);
+                return "translate(" + xScale(d[1]) + "," + yScale(d[2]) + ")";
+            })
+            .attr("d", function (d) {
+                //console.log(d[4]);
+                return regions[d[4]]();
+            })
+            .style("fill", function (d) { return colorScale(d[3]) })
+            .style("stroke", "#000000")
+            .style("stroke-width", "1")
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide)
+            .each(function(d){
+                
+                //console.log("append");
+                //$( "#progressbar" ).progressbar("option", "value", $( "#progressbar" ).progressbar("option","value")+1);
+            })
+            .datum(function (d) {
+                var object = {
+                    country: d[0],
+                    x: d[1],
+                    y: d[2],
+                    year: d[3],
+                    region: d[4]
+                }
 					
 			//distance plots include a destination location
 			if (d[5]) {
@@ -321,12 +340,17 @@ function createScale(scaleType, axis, data) {
 			switch (axis) {
 				case ("x"):
 					scale = d3.scale.linear();
-					scale.domain([0, d3.max(data, function (d) { return d[1] })]);
+					scale.domain([
+						Math.min(0, d3.min(data, function (d) { return d[1] })),
+						d3.max(data, function (d) { return d[1] })
+						]);
 					scale.range([leftPadding, w - padding]);
 					break;
 				case ("y"):
 					scale = d3.scale.linear();
-					scale.domain([0, d3.max(data, function (d) { return d[2] })]);
+					scale.domain([
+						Math.min(0, d3.min(data, function (d) { return d[2] })),
+						d3.max(data, function (d) { return d[2] })]);
 					scale.range([h - bottomPadding, padding]);
 					break;
 			}

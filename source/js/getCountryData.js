@@ -18,6 +18,9 @@ function getCountryData(countryData, country, dataType, year, dataSuffix){
 			case "refugeesOut":
 					returnValue =  countryData[country].refugeeData[year].refugeesOut[dataSuffix] ? countryData[country].refugeeData[year].refugeesOut[dataSuffix] : null;
 			break;
+            case "population":
+					returnValue =  countryData[country].Population[year] ? countryData[country].Population[year]  : null;
+			break;
 			// case "refugeesPercentPopulation":
 			// 	returnValue =  countryData[country].refugeeData[year].refugeesOut[dataSuffix] ? countryData[country].refugeeData[year].refugeesOut[dataSuffix] : null;
 			// break;

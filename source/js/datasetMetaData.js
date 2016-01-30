@@ -7,7 +7,7 @@ var datasetInfo ={
 		fileName :"country regional and world GDP.csv",
 		active: true,
 		scale: "normal", //normal scale is used when a high data value is desirable
-		format: "billions"
+		format: "money"
 	},
 	gdpCapita: {
 		name:	"Per Capita GDP",
@@ -35,7 +35,7 @@ var datasetInfo ={
 		fileName: "Refugee_Numbers_UNdata_Export_20151029_232124036.csv",
 		active: true,
 		scale: "inverse", //inverse scale is used when a lower data value is desirable
-		format: "wholeNumber"
+		format: "longNumber"
 	},
 	refugeesOut: {
 		name:	"Refugees Out",
@@ -44,7 +44,7 @@ var datasetInfo ={
 		filename: "Refugee_Numbers_UNdata_Export_20151029_232124036.csv",
 		active: true,
 		scale: "inverse",
-		format: "wholeNumber"
+		format: "longNumber"
 	},
 	refugeesPercentPopulation: {
 		name:	"Refugees as Percent of Population",
@@ -53,7 +53,6 @@ var datasetInfo ={
 		active: false,
 		scale: "inverse",
 		format: "percent"
-		
 	},
 	homicidesCount: {
 		name:	"Homicide Count",
@@ -67,7 +66,7 @@ var datasetInfo ={
 	homicidesRate: {
 		name:	"Homicides per 100,000",
 		shortName: "homicidesRate",
-		source: "United Nations ",
+		source: "United Nations",
 		fileName: "un homicide statistics.csv",
 		active: true,
 		scale: "inverse",
@@ -98,7 +97,7 @@ var datasetInfo ={
 		filename: "prio 124920_1ucdpprio-armed-conflict-dataset_v.4-2015.csv",
 		active: true,
 		scale: "UPIconflict",
-		format: "UPIconflict"
+		format: "wholeNumber"
 	},
 	disasters: {
 		name:	"Disasters (total affected)",
@@ -137,7 +136,7 @@ var datasetInfo ={
 		source: "Institute for Economics and Peace",
 		link: "http://wikiprogress.org/data/dataset/global-peace-index",
 		fileName: "global_peace_index.csv",
-		active: true,
+		active: false,
 		scale: "normal",
 		format: "decimal"
 	},
@@ -157,7 +156,7 @@ var datasetInfo ={
 		source: "Gib­ney, Mark, Linda Cor­nett, Reed Wood, Peter Hasch­ke, and Daniel Arnon",
 		fileName: "political terror scale - PTS2015.csv",
 		link: "ht­tp://www.polit­ic­al­ter­rorscale.org",
-		active: true,
+		active: false,
 		scale: "inverse",
 		format: "wholeNumber"
 	},
@@ -167,7 +166,7 @@ var datasetInfo ={
 		source: "Gib­ney, Mark, Linda Cor­nett, Reed Wood, Peter Hasch­ke, and Daniel Arnon",
 		fileName: "political terror scale - PTS2015.csv",
 		link: "ht­tp://www.polit­ic­al­ter­rorscale.org",
-		active: true,
+		active: false,
 		scale: "inverse",
 		format: "wholeNumber"
 	},
@@ -177,7 +176,7 @@ var datasetInfo ={
 		source: "Gib­ney, Mark, Linda Cor­nett, Reed Wood, Peter Hasch­ke, and Daniel Arnon",
 		fileName: "political terror scale - PTS2015.csv",
 		link: "ht­tp://www.polit­ic­al­ter­rorscale.org",
-		active: true,
+		active: false,
 		scale: "inverse",
 		format: "wholeNumber"
 	},
@@ -187,9 +186,21 @@ var datasetInfo ={
 		source: "Gib­ney, Mark, Linda Cor­nett, Reed Wood, Peter Hasch­ke, and Daniel Arnon",
 		link: "ht­tp://www.polit­ic­al­ter­rorscale.org",
 		fileName: "political terror scale - SVS2014.csv",
-		active: true,
+		active: false,
 		scale: "inverse",
 		format: "wholeNumber"
-	}
-	
+	},
+	getNumberDatasets : function(){
+        var numSets = 0;
+        for (var dataset in datasetInfo){
+            if(datasetInfo.hasOwnProperty(dataset)){
+                if(datasetInfo[dataset].active){
+                    numSets ++;
+                }
+            }
+        }
+        console.log("loading " + numSets + " files");
+        return numSets;
+        
+    }
 }

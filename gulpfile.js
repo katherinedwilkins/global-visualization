@@ -48,7 +48,7 @@ gulp.task("js", ['cleanjs'], function(){
 
 gulp.task("buildDist", function(){
   runSequence("clean", ['vendorjs', 'custjs', 'copyDatasets', 
-  'copyWorkers', "html", "copyCleanCustJs", "copyTopoJSONData"]);
+    "html", "copyClean", "copyTopoJSONData"]);
 });
 
 //copy plain old html files to the dist directory, change js, css, etc. refs in process
@@ -89,21 +89,17 @@ gulp.task("copyDatasets", function(){
       .pipe(gulp.dest("./dist/datasets/"));
 })
 
-gulp.task("copyWorkers", function(){
-  gulp.src([
-    "./source/js/getDistancePlotWorker.js", 
-    "./source/js/getPlotDataWorker.js",
-    "./source/js/datamaps.world.min.js",
-    "./source/js/getCountryData.js"])
-    .pipe(plumber())
-      .pipe(gulp.dest("./dist/js/"));
-})
 
 //copy scatterplot.js and chloropleth.js directly
-gulp.task("copyCleanCustJs",  function () {
+gulp.task("copyClean",  function () {
   gulp.src([
+      "./source/js/datasetMetaData.js",
       "./source/js/chloropleth.js",
       "./source/js/scatterPlot.js",
+      "./source/js/getDistancePlotWorker.js", 
+    "./source/js/getPlotDataWorker.js",
+    "./source/js/datamaps.world.min.js",
+    "./source/js/getCountryData.js"
     ])
     .pipe(stripDebug())
     .pipe(gulp.dest("./dist/js/"));

@@ -13,8 +13,12 @@
 
 <body>
     <div id="shade">
-        <h1 id="waitingMessage" class="waiting">Please Wait</h1>
-    </div>
+            <div class="shadeCenter">
+                <h1 id = "shadeMainMessage" class="shadeMainMessage"></h1>
+                <h4 id = "shadeMessage" class="shadeMessage"></h4>
+                <div id="progressbar" class="shadeProgressBar"></div>
+            </div>
+        </div>
     <div class="container-fluid" id="container">
         
         <div class="row">
@@ -130,7 +134,7 @@
                     <span class="caret"></span></button>
                 <ul id="datasetMenu" class="dropdown-menu">
                 </ul>
-                <span id="selectedYear"></span>
+                <span id="selectedData" class="instructions"></span>
             </div>
         </div>
         <div class="col-sm-12 col-md-12 well controlContainer" id="controlPanelContainer">
